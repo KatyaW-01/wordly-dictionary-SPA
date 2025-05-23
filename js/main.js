@@ -1,5 +1,5 @@
 async function fetchDictionaryData(word) {
-  if(typeof word !== "string" || word.trim() === "") {
+  if(typeof word !== "string" || word.trim() === "") { //if invalid input
     displayError('Error: Please enter a valid word')
     return; //try block wont run if there is an error
   }
@@ -8,7 +8,7 @@ async function fetchDictionaryData(word) {
     const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${trimmedWord}`)
     if (!response.ok) {
       displayError('Error: Word not found')
-      return; //stop rest of function from running
+      return; //stop rest of function from running if api request doesnt go through
     }
     const data = await response.json()
     displayDictionaryData(data)
