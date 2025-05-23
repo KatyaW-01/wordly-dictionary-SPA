@@ -19,9 +19,20 @@ async function fetchDictionaryData(word) {
 }
 
 function displayDictionaryData(data) {
-
+  let partOfSpeech;
+  let definition;
+  let exampleUsage;
+  const meanings = data[0].meanings //array of objects, each object being a part of speech with definition
+  
 }
 
 function displayError(message) {
 
 }
+
+const searchButton = document.querySelector("#button")
+const input = document.querySelector("#word")
+searchButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  fetchDictionaryData(input.value)
+})
