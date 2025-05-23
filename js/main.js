@@ -22,8 +22,11 @@ function displayDictionaryData(data) {
   let partOfSpeech;
   let definition;
   let exampleUsage;
-  const meanings = data[0].meanings //array of objects, each object being a part of speech with definition
-  
+  const audioUrl = data[0].phonetics[0].audio
+  console.log(audioUrl)
+ 
+  const meanings = data.filter(entry => entry.word === input.value).flatMap(entry => entry.meanings)
+  console.log(meanings) //array of objects, each object having part of speach and definitions
 }
 
 function displayError(message) {
