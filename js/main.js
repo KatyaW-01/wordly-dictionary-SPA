@@ -19,14 +19,14 @@ async function fetchDictionaryData(word) {
 }
 
 function displayDictionaryData(data) {
-  let partOfSpeech;
-  let definition;
-  let exampleUsage;
+  const wordData = {}
   const audioUrl = data[0].phonetics[0].audio
   console.log(audioUrl)
  
-  const meanings = data.filter(entry => entry.word === input.value).flatMap(entry => entry.meanings)
+  const meanings = data.flatMap(entry => entry.meanings) //combines all meanings arrays into a single array
   console.log(meanings) //array of objects, each object having part of speach and definitions
+
+  //make an object with part of speech as key and array of definitions as value 
 }
 
 function displayError(message) {
