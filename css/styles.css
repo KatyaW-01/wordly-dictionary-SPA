@@ -25,6 +25,15 @@ button {
   padding: 5px
 }
 
+button:hover {
+  background-color: #f4a582;
+}
+
 input {
   padding: 5px;
+}
+
+input:focus {
+  outline: none; /* removes default blue ring around input box when clicked on */
+  border: 2px solid #f4a582;
 }
