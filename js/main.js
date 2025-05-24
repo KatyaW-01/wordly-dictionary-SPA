@@ -10,6 +10,12 @@ function initialize() {
 
 async function fetchDictionaryData(word) {
   if(typeof word !== "string" || word.trim() === "") { //if invalid input
+    audioDiv.innerHTML = "" //reset page if then display error message
+    wordResults.innerHTML = ""
+    const oldExampleDiv = document.getElementById('example-box')
+    if(oldExampleDiv) {
+      oldExampleDiv.remove()
+    }
     displayError('Error: Please enter a valid word')
     return; //try block wont run if there is an error
   }
@@ -17,6 +23,12 @@ async function fetchDictionaryData(word) {
   try {
     const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${trimmedWord}`)
     if (!response.ok) {
+      audioDiv.innerHTML = "" //reset page if then display error message
+      wordResults.innerHTML = ""
+      const oldExampleDiv = document.getElementById('example-box')
+      if(oldExampleDiv) {
+        oldExampleDiv.remove()
+      }
       displayError('Error: Word not found')
       return; //stop rest of function from running if api request doesnt go through
     }
