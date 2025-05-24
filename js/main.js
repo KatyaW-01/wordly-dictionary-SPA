@@ -46,6 +46,29 @@ function displayDictionaryData(data) {
   })
 
   console.log("Word data object:",wordData)
+  //Display the Daya
+  const wordResults = document.querySelector("#definition-columns")
+
+  for(const [key,value] of Object.entries(wordData)){
+    if(key === "Example" && value.length === 0) continue; //skips examples if there are none
+    const header = document.createElement('h2')
+    if(key === "Example" && value.length > 0) {
+      header.textContent = key.charAt(0).toUpperCase() + key.slice(1) + "s"//capitalize first letter of the key
+    } else {
+      header.textContent = key.charAt(0).toUpperCase() + key.slice(1)
+    }
+    
+    if(key !== "Example") {
+      const section = document.createElement('div') //create div elements for parts of speech
+      section.classname = 'part-of-speech'
+      section.id = key
+
+      section.append(header) //attach header to the div
+      wordResults.append(section) //attach div to the main div of definition columns in the html
+    }
+    
+  }
+
 }
 
 function displayError(message) {
