@@ -17,9 +17,17 @@ async function fetchDictionaryData(word) {
     console.error('Error fetching word data:', error)
   }
 }
+const wordResults = document.querySelector("#definition-columns")
+const exampleBox = document.querySelector("#example-box")
+const audioDiv = document.querySelector("#audio")
 
 function displayDictionaryData(data) {
-  const audioUrl = data[0].phonetics[0].audio
+  const phonetics = data[0].phonetics
+  const audioObj = phonetics.find(obj => obj.audio)
+  let audioUrl;
+  if(audioObj) {
+    audioUrl = audioObj.audio
+  }
   const meanings = data.flatMap(entry => entry.meanings) //combines all meanings arrays into a single array
 
   const wordData = {example: []}
@@ -47,11 +55,12 @@ function displayDictionaryData(data) {
   console.log(wordData)
   //Display the Data
 
-  const wordResults = document.querySelector("#definition-columns")
-  const exampleBox = document.querySelector("#example-box")
-  const audioDiv = document.querySelector("#audio")
+  audioDiv.innerHTML = "" //reset html with every search
+  wordResults.innerHTML = ""
+  exampleBox.innerHTML = ""
 
   for(const [key,value] of Object.entries(wordData)){
+    
     if(key === "example" && value.length === 0) continue; //skips examples if there are none
 
     const header = document.createElement('h2')
