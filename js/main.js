@@ -10,12 +10,7 @@ function initialize() {
 
 async function fetchDictionaryData(word) {
   if(typeof word !== "string" || word.trim() === "") { //if invalid input
-    audioDiv.innerHTML = "" //reset page if then display error message
-    wordResults.innerHTML = ""
-    const oldExampleDiv = document.getElementById('example-box')
-    if(oldExampleDiv) {
-      oldExampleDiv.remove()
-    }
+    resetWebpage()
     displayError('Error: Please enter a valid word')
     return; //try block wont run if there is an error
   }
@@ -23,12 +18,7 @@ async function fetchDictionaryData(word) {
   try {
     const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${trimmedWord}`)
     if (!response.ok) {
-      audioDiv.innerHTML = "" //reset page if then display error message
-      wordResults.innerHTML = ""
-      const oldExampleDiv = document.getElementById('example-box')
-      if(oldExampleDiv) {
-        oldExampleDiv.remove()
-      }
+      resetWebpage()
       displayError('Error: Word not found')
       return; //stop rest of function from running if api request doesnt go through
     }
@@ -36,6 +26,7 @@ async function fetchDictionaryData(word) {
     
     displayDictionaryData(data)
   } catch (error) {
+    resetWebpage()
     displayError('Failed to load word data. Please try again.')
     console.error('Error fetching word data:', error)
   }
@@ -44,24 +35,76 @@ async function fetchDictionaryData(word) {
 const wordResults = document.querySelector("#definition-columns")
 const audioDiv = document.querySelector("#audio")
 const wordDataSection = document.querySelector(".word-data")
+const wordName = document.querySelector("#word-name")
 
 
 function displayDictionaryData(data) {
-  const errorMessage = document.querySelector("#error-message") //remove any error messages that might have been previously displayed
-  errorMessage.classList.add('hidden')
-  errorMessage.textContent = ""
-  //get the data from the api
-  const phonetics = data[0].phonetics
-  const audioObj = phonetics.find(obj => obj.audio)
-  let audioUrl;
-  if(audioObj) {
-    audioUrl = audioObj.audio
+  removeErrorMessages()
+
+  resetWebpage()
+
+  dataToObject(data) //returns an object with the dictionary data
+
+  //display name of word entered
+  const exampleDiv = document.createElement('div')
+  exampleDiv.id = "example-box"
+  const word = data[0].word
+  capitalWord = word.charAt(0).toUpperCase() + word.slice(1)
+  
+  wordName.textContent = capitalWord 
+  
+  //display data for word entered
+  for(const [key,value] of Object.entries(dataToObject(data))){
+    if(key === "example" && value.length === 0) continue; //skips examples if there are none
+    const header = document.createElement('h2')
+
+    if(key !== "example") { //create div elements for parts of speech
+      header.textContent = key.charAt(0).toUpperCase() + key.slice(1) 
+      const section = document.createElement('div') 
+      section.className = 'part-of-speech'
+      section.id = key
+      const list = document.createElement('ul')
+
+      for(const definition of value) {
+        const li = document.createElement('li')
+        li.textContent = definition
+        list.append(li)
+      }
+
+      section.append(header) 
+      section.append(list) 
+      wordResults.append(section) 
+    }
+
+    if(key === "example" && value.length > 0) { //create list of examples
+      const exampleList = document.createElement('ul')
+      header.textContent = "Example Sentences"
+
+      for(const example of value) {
+        const listElement = document.createElement('li')
+        listElement.textContent = example
+        exampleDiv.append(header)
+        exampleList.append(listElement)
+        exampleDiv.append(exampleList)
+        wordDataSection.append(exampleDiv)
+      }
+    }
   }
-  const text = phonetics.find(obj => obj.text)
-  let phoneticsText;
-  if(text) {
-    phoneticsText = text.text
+
+  displayPronunciation(data)
+}
+
+function resetWebpage() {
+  audioDiv.innerHTML = "" //reset page if then display error message
+  wordResults.innerHTML = ""
+  wordName.textContent = ""
+  const oldExampleDiv = document.getElementById('example-box')
+  if(oldExampleDiv) {
+    oldExampleDiv.remove()
   }
+}
+
+function dataToObject(data){
   const meanings = data.flatMap(entry => entry.meanings) //combines all meanings arrays into a single array
   const wordData = {example: []}
 
@@ -84,59 +127,21 @@ function displayDictionaryData(data) {
     })
   })
 
-  //Display the Data
-  audioDiv.innerHTML = "" //reset html with every search
-  wordResults.innerHTML = ""
-  const oldExampleDiv = document.getElementById('example-box')
-  if(oldExampleDiv) {
-    oldExampleDiv.remove()
+  return wordData
+}
+
+function displayPronunciation(data) {
+  const phonetics = data[0].phonetics
+  const audioObj = phonetics.find(obj => obj.audio)
+  let audioUrl;
+  if(audioObj) {
+    audioUrl = audioObj.audio
   }
-
-  const exampleDiv = document.createElement('div')
-  exampleDiv.id = "example-box"
-  const word = data[0].word
-  capitalWord = word.charAt(0).toUpperCase() + word.slice(1)
-  const wordName = document.querySelector("#word-name")
-  wordName.textContent = capitalWord
-
-  for(const [key,value] of Object.entries(wordData)){
-    if(key === "example" && value.length === 0) continue; //skips examples if there are none
-    const header = document.createElement('h2')
-
-    if(key !== "example") { //create div elements for parts of speech
-      header.textContent = key.charAt(0).toUpperCase() + key.slice(1) //capitalize first letter of the key
-      const section = document.createElement('div') 
-      section.className = 'part-of-speech'
-      section.id = key
-      const list = document.createElement('ul')
-
-      for(const definition of value) {
-        const li = document.createElement('li')
-        li.textContent = definition
-        list.append(li)
-      }
-
-      section.append(header) //attach header to the div
-      section.append(list) //attach list to div
-      wordResults.append(section) //attach div to the main div of definition columns in the html
-    }
-
-    if(key === "example" && value.length > 0) { //create list of examples
-      const exampleList = document.createElement('ul')
-      header.textContent = "Example Sentences"
-
-      for(const example of value) {
-        const listElement = document.createElement('li')
-        listElement.textContent = example
-        exampleDiv.append(header)
-        exampleList.append(listElement)
-        exampleDiv.append(exampleList)
-        wordDataSection.append(exampleDiv)
-      }
-    }
+  const text = phonetics.find(obj => obj.text)
+  let phoneticsText;
+  if(text) {
+    phoneticsText = text.text
   }
-
-  //display word pronunciation
   if(phoneticsText){
     const span = document.createElement('span')
     span.id = 'phonetics'
@@ -156,6 +161,12 @@ function displayError(message) {
   const error = document.querySelector("#error-message")
   error.classList.remove('hidden')
   error.textContent = message
+}
+
+function removeErrorMessages() {
+  const errorMessage = document.querySelector("#error-message") 
+  errorMessage.classList.add('hidden')
+  errorMessage.textContent = ""
 }
 
 initialize()
