@@ -10,6 +10,12 @@ h1 {
   font-size: 45px;
 }
 
+#word-name {
+  text-align: center;
+  font-size: 30px;
+  color: #303030;
+}
+
 .form {
   display: block;
   text-align: center;

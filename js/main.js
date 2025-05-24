@@ -94,7 +94,11 @@ function displayDictionaryData(data) {
 
   const exampleDiv = document.createElement('div')
   exampleDiv.id = "example-box"
-  
+  const word = data[0].word
+  capitalWord = word.charAt(0).toUpperCase() + word.slice(1)
+  const wordName = document.querySelector("#word-name")
+  wordName.textContent = capitalWord
+
   for(const [key,value] of Object.entries(wordData)){
     if(key === "example" && value.length === 0) continue; //skips examples if there are none
     const header = document.createElement('h2')
