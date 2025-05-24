@@ -45,8 +45,8 @@ function displayDictionaryData(data) {
     })
   })
 
-  console.log("Word data object:",wordData)
-  //Display the Daya
+  //Display the Data
+  
   const wordResults = document.querySelector("#definition-columns")
 
   for(const [key,value] of Object.entries(wordData)){
@@ -58,15 +58,27 @@ function displayDictionaryData(data) {
       header.textContent = key.charAt(0).toUpperCase() + key.slice(1)
     }
     
-    if(key !== "Example") {
-      const section = document.createElement('div') //create div elements for parts of speech
+    if(key !== "Example") { //create div elements for parts of speech
+      const section = document.createElement('div') 
       section.classname = 'part-of-speech'
       section.id = key
 
+      const list = document.createElement('ul')
+
+      for(const string of value) {
+        const li = document.createElement('li')
+        li.textContent = string
+        list.append(li)
+      }
+
       section.append(header) //attach header to the div
+      section.append(list) //attach list to div
       wordResults.append(section) //attach div to the main div of definition columns in the html
     }
-    
+
+    if(key === "Example" && value.length > 0) { //create list of examples
+
+    }
   }
 
 }
