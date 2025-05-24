@@ -3,7 +3,7 @@ function initialize() {
   const input = document.querySelector("#word")
 
   searchButton.addEventListener("click", (event) => {
-    event.preventDefault(); //stops page from reloading on submit
+    event.preventDefault(); 
     fetchDictionaryData(input.value)
   })
 }
@@ -12,7 +12,7 @@ async function fetchDictionaryData(word) {
   if(typeof word !== "string" || word.trim() === "") { //if invalid input
     resetWebpage()
     displayError('Error: Please enter a valid word')
-    return; //try block wont run if there is an error
+    return; 
   }
   const trimmedWord = word.trim() //accounts for if user puts extra spaces at beginning or end of the word
   try {
@@ -23,7 +23,6 @@ async function fetchDictionaryData(word) {
       return; //stop rest of function from running if api request doesnt go through
     }
     const data = await response.json()
-    
     displayDictionaryData(data)
   } catch (error) {
     resetWebpage()
@@ -93,6 +92,8 @@ function displayDictionaryData(data) {
 
   displayPronunciation(data)
 }
+
+//helper functions
 
 function resetWebpage() {
   audioDiv.innerHTML = "" //reset page if then display error message
@@ -169,4 +170,4 @@ function removeErrorMessages() {
   errorMessage.textContent = ""
 }
 
-initialize()
+initialize() 
