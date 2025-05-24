@@ -18,8 +18,9 @@ async function fetchDictionaryData(word) {
   }
 }
 const wordResults = document.querySelector("#definition-columns")
-const exampleBox = document.querySelector("#example-box")
+//const exampleBox = document.querySelector("#example-box")
 const audioDiv = document.querySelector("#audio")
+const wordDataSection = document.querySelector(".word-data")
 
 function displayDictionaryData(data) {
   const phonetics = data[0].phonetics
@@ -52,12 +53,19 @@ function displayDictionaryData(data) {
       }
     })
   })
-  console.log(wordData)
-  //Display the Data
 
+  //Display the Data
   audioDiv.innerHTML = "" //reset html with every search
   wordResults.innerHTML = ""
-  exampleBox.innerHTML = ""
+
+  const oldExampleDiv = document.getElementById('example-box')
+  if(oldExampleDiv) {
+    oldExampleDiv.remove()
+  }
+
+  const exampleDiv = document.createElement('div')
+  exampleDiv.id = "example-box"
+  
 
   for(const [key,value] of Object.entries(wordData)){
     
@@ -69,7 +77,7 @@ function displayDictionaryData(data) {
       header.textContent = key.charAt(0).toUpperCase() + key.slice(1) //capitalize first letter of the key
 
       const section = document.createElement('div') 
-      section.classname = 'part-of-speech'
+      section.className = 'part-of-speech'
       section.id = key
 
       const list = document.createElement('ul')
@@ -86,16 +94,17 @@ function displayDictionaryData(data) {
     }
 
     if(key === "example" && value.length > 0) { //create list of examples
+      
       const exampleList = document.createElement('ul')
       header.textContent = "Example Sentences"
       for(const example of value) {
         const listElement = document.createElement('li')
         listElement.textContent = example
 
-        exampleBox.append(header)
+        exampleDiv.append(header)
         exampleList.append(listElement)
-        exampleBox.append(exampleList)
-
+        exampleDiv.append(exampleList)
+        wordDataSection.append(exampleDiv)
       }
     }
   }
@@ -106,12 +115,12 @@ function displayDictionaryData(data) {
     audio.controls = true
     audioDiv.append(audio)
   }
-
 }
 
 function displayError(message) {
 
 }
+
 
 const searchButton = document.querySelector("#button")
 const input = document.querySelector("#word")

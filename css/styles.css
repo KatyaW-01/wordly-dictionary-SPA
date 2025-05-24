@@ -1,5 +1,6 @@
 body {
   background-color: #fff0db;
+  padding: 7.5px;
 }
 
 h1 {
@@ -37,3 +38,46 @@ input:focus {
   outline: none; /* removes default blue ring around input box when clicked on */
   border: 2px solid #f4a582;
 }
+
+#definition-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.part-of-speech {
+  border: 3px solid #d9b3a0;
+  border-radius: 5px;
+  background-color: #ffeae0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.part-of-speech h2 {
+  text-align: center;
+}
+
+#example-box {
+  border: 3px solid #f4a582;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px
+}
+
+.part-of-speech ul {
+  margin: 20px;
+}
+
+#audio {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+
+li {
+  color: #505050;
+}
+
+
