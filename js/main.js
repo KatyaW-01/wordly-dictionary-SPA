@@ -19,14 +19,33 @@ async function fetchDictionaryData(word) {
 }
 
 function displayDictionaryData(data) {
-  const wordData = {}
   const audioUrl = data[0].phonetics[0].audio
-  console.log(audioUrl)
- 
   const meanings = data.flatMap(entry => entry.meanings) //combines all meanings arrays into a single array
-  console.log(meanings) //array of objects, each object having part of speach and definitions
 
-  //make an object with part of speech as key and array of definitions as value 
+  const wordData = {Example: []}
+
+  meanings.map((object) => {
+    const definitionsArray = object.definitions //array of definition objects
+    const definitions = definitionsArray.map(obj => obj["definition"]) //array of all the definition values from the objects
+
+    if(!wordData[object.partOfSpeech]){ //if the key doesnt exist, create it
+      wordData[object.partOfSpeech] = []
+    }
+
+    for(let i=0; i < definitions.length; i++) {
+      wordData[object.partOfSpeech].push(definitions[i]) //push the definitions into the array
+    }
+  })
+
+  meanings.forEach((meaning) => {
+    meaning.definitions.forEach((definition) => {
+      if(definition.example){ //if there are examples push into the array
+        wordData["Example"].push(definition.example)
+      }
+    })
+  })
+
+  console.log("Word data object:",wordData)
 }
 
 function displayError(message) {
