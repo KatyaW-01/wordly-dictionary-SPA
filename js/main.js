@@ -33,6 +33,7 @@ async function fetchDictionaryData(word) {
       return; //stop rest of function from running if api request doesnt go through
     }
     const data = await response.json()
+    
     displayDictionaryData(data)
   } catch (error) {
     displayError('Failed to load word data. Please try again.')
@@ -46,6 +47,9 @@ const wordDataSection = document.querySelector(".word-data")
 
 
 function displayDictionaryData(data) {
+  const errorMessage = document.querySelector("#error-message") //remove any error messages that might have been previously displayed
+  errorMessage.classList.add('hidden')
+  errorMessage.textContent = ""
   //get the data from the api
   const phonetics = data[0].phonetics
   const audioObj = phonetics.find(obj => obj.audio)
