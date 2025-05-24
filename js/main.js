@@ -22,7 +22,7 @@ function displayDictionaryData(data) {
   const audioUrl = data[0].phonetics[0].audio
   const meanings = data.flatMap(entry => entry.meanings) //combines all meanings arrays into a single array
 
-  const wordData = {Example: []}
+  const wordData = {example: []}
 
   meanings.map((object) => {
     const definitionsArray = object.definitions //array of definition objects
@@ -40,34 +40,33 @@ function displayDictionaryData(data) {
   meanings.forEach((meaning) => {
     meaning.definitions.forEach((definition) => {
       if(definition.example){ //if there are examples push into the array
-        wordData["Example"].push(definition.example)
+        wordData["example"].push(definition.example)
       }
     })
   })
-
+  console.log(wordData)
   //Display the Data
-  
+
   const wordResults = document.querySelector("#definition-columns")
+  const exampleBox = document.querySelector("#example-box")
 
   for(const [key,value] of Object.entries(wordData)){
-    if(key === "Example" && value.length === 0) continue; //skips examples if there are none
+    if(key === "example" && value.length === 0) continue; //skips examples if there are none
+
     const header = document.createElement('h2')
-    if(key === "Example" && value.length > 0) {
-      header.textContent = key.charAt(0).toUpperCase() + key.slice(1) + "s"//capitalize first letter of the key
-    } else {
-      header.textContent = key.charAt(0).toUpperCase() + key.slice(1)
-    }
     
-    if(key !== "Example") { //create div elements for parts of speech
+    if(key !== "example") { //create div elements for parts of speech
+      header.textContent = key.charAt(0).toUpperCase() + key.slice(1) //capitalize first letter of the key
+
       const section = document.createElement('div') 
       section.classname = 'part-of-speech'
       section.id = key
 
       const list = document.createElement('ul')
 
-      for(const string of value) {
+      for(const definition of value) {
         const li = document.createElement('li')
-        li.textContent = string
+        li.textContent = definition
         list.append(li)
       }
 
@@ -76,8 +75,18 @@ function displayDictionaryData(data) {
       wordResults.append(section) //attach div to the main div of definition columns in the html
     }
 
-    if(key === "Example" && value.length > 0) { //create list of examples
+    if(key === "example" && value.length > 0) { //create list of examples
+      const exampleList = document.createElement('ul')
+      header.textContent = "Example Sentences"
+      for(const example of value) {
+        const listElement = document.createElement('li')
+        listElement.textContent = example
 
+        exampleBox.append(header)
+        exampleList.append(listElement)
+        exampleBox.append(exampleList)
+
+      }
     }
   }
 
