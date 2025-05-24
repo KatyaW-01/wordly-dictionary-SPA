@@ -6,6 +6,7 @@ body {
 h1 {
   text-align: center;
   padding: 20px;
+  color: #303030
 }
 
 .form {
@@ -56,13 +57,20 @@ input:focus {
 
 .part-of-speech h2 {
   text-align: center;
+  color: #303030;
 }
 
 #example-box {
-  border: 3px solid #f4a582;
+  border: 3px solid #a9b6c1;
   border-radius: 5px;
+  background-color: #e3e8ee;
   padding: 20px;
-  margin: 10px
+  margin: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+#example-box h2 {
+  color: #303030;
 }
 
 .part-of-speech ul {
