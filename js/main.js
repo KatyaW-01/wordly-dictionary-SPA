@@ -41,6 +41,11 @@ function displayDictionaryData(data) {
   if(audioObj) {
     audioUrl = audioObj.audio
   }
+  const text = phonetics.find(obj => obj.text)
+  let phoneticsText;
+  if(text) {
+    phoneticsText = text.text
+  }
   const meanings = data.flatMap(entry => entry.meanings) //combines all meanings arrays into a single array
   const wordData = {example: []}
 
@@ -113,6 +118,12 @@ function displayDictionaryData(data) {
   }
 
   //display word pronunciation
+  if(phoneticsText){
+    const span = document.createElement('span')
+    span.id = 'phonetics'
+    span.textContent = phoneticsText
+    audioDiv.append(span)
+  }
 
   if(audioUrl){ //checks if the url exists
     const audio = document.createElement('audio')
@@ -120,6 +131,7 @@ function displayDictionaryData(data) {
     audio.controls = true
     audioDiv.append(audio)
   }
+
 }
 
 function displayError(message) {
