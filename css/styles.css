@@ -53,6 +53,7 @@ input:focus {
   border-radius: 5px;
   background-color: #ffeae0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: 10px;
 }
 
 .part-of-speech h2 {
@@ -73,8 +74,13 @@ input:focus {
   color: #303030;
 }
 
+#example-box ul {
+  padding: 15px;
+}
+
 .part-of-speech ul {
-  margin: 20px;
+  margin: 25px;
+  padding: 10px;
 }
 
 #audio {
