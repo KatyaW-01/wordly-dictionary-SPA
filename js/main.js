@@ -49,6 +49,7 @@ function displayDictionaryData(data) {
 
   const wordResults = document.querySelector("#definition-columns")
   const exampleBox = document.querySelector("#example-box")
+  const audioDiv = document.querySelector("#audio")
 
   for(const [key,value] of Object.entries(wordData)){
     if(key === "example" && value.length === 0) continue; //skips examples if there are none
@@ -88,6 +89,13 @@ function displayDictionaryData(data) {
 
       }
     }
+  }
+  //display word pronunciation
+  if(audioUrl){
+    const audio = document.createElement('audio')
+    audio.src = audioUrl
+    audio.controls = true
+    audioDiv.append(audio)
   }
 
 }
