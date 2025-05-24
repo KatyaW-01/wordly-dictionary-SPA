@@ -91,7 +91,6 @@ function displayDictionaryData(data) {
   const exampleDiv = document.createElement('div')
   exampleDiv.id = "example-box"
   
-
   for(const [key,value] of Object.entries(wordData)){
     if(key === "example" && value.length === 0) continue; //skips examples if there are none
     const header = document.createElement('h2')
@@ -143,7 +142,6 @@ function displayDictionaryData(data) {
     audio.controls = true
     audioDiv.append(audio)
   }
-
 }
 
 function displayError(message) {
