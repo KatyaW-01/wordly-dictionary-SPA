@@ -88,4 +88,8 @@ li {
   color: #505050;
 }
 
-
+#error-message {
+  text-align: center;
+  color: red;
+  
+}

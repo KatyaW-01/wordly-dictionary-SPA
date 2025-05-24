@@ -1,3 +1,13 @@
+function initialize() {
+  const searchButton = document.querySelector("#button")
+  const input = document.querySelector("#word")
+
+  searchButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    fetchDictionaryData(input.value)
+  })
+}
+
 async function fetchDictionaryData(word) {
   if(typeof word !== "string" || word.trim() === "") { //if invalid input
     displayError('Error: Please enter a valid word')
@@ -17,10 +27,11 @@ async function fetchDictionaryData(word) {
     console.error('Error fetching word data:', error)
   }
 }
+
 const wordResults = document.querySelector("#definition-columns")
-//const exampleBox = document.querySelector("#example-box")
 const audioDiv = document.querySelector("#audio")
 const wordDataSection = document.querySelector(".word-data")
+
 
 function displayDictionaryData(data) {
   const phonetics = data[0].phonetics
@@ -118,13 +129,9 @@ function displayDictionaryData(data) {
 }
 
 function displayError(message) {
-
+  const error = document.querySelector("#error-message")
+  error.classList.remove('hidden')
+  error.textContent = message
 }
 
-
-const searchButton = document.querySelector("#button")
-const input = document.querySelector("#word")
-searchButton.addEventListener("click", (event) => {
-  event.preventDefault();
-  fetchDictionaryData(input.value)
-})
+initialize()
